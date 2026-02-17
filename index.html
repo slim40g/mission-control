@@ -5,6 +5,258 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mission Control | Coke & Jean-Clawed</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0d0d12;
+            --bg-secondary: #15151c;
+            --bg-tertiary: #1e1e28;
+            --border: rgba(255,255,255,0.08);
+            --border-hover: rgba(255,255,255,0.15);
+            --text-primary: #f0f0f5;
+            --text-secondary: #9ca3af;
+            --accent-coke: #3b82f6;
+            --accent-jean: #8b5cf6;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand-icon {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+        }
+        .brand h1 {
+            font-size: 1.4rem;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .clock-widget { text-align: right; }
+        .clock-widget .time {
+            font-size: 1.8rem;
+            font-family: 'SF Mono', monospace;
+            font-weight: 700;
+        }
+        .clock-widget .date { color: var(--text-secondary); font-size: 0.9rem; }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 30px; }
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 25px;
+        }
+        @media (max-width: 1100px) { .dashboard { grid-template-columns: 1fr; } }
+        
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+        .card:last-child { margin-bottom: 0; }
+        .card-header {
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-header h2 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card-header h2 i { color: var(--accent-coke); }
+        .card-body { padding: 22px; }
+        
+        .crypto-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        .crypto-card {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .crypto-symbol { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+        .crypto-name { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; }
+        .crypto-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-coke);
+            font-family: 'SF Mono', monospace;
+            margin: 10px 0;
+        }
+        .crypto-change { font-size: 0.8rem; }
+        .crypto-change.up { color: var(--success); }
+        .crypto-change.down { color: var(--danger); }
+        
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 12px;
+        }
+        .link-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+        .link-card:hover {
+            border-color: var(--accent-coke);
+            background: var(--bg-primary);
+        }
+        .link-card i { font-size: 1.4rem; margin-bottom: 8px; display: block; color: var(--accent-coke); }
+        .link-card span { font-size: 0.8rem; }
+        
+        .agent-card .card-header h2 i { color: var(--accent-jean); }
+        .status-badge {
+            background: var(--success);
+            color: #000;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .agent-status { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .agent-avatar {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+        }
+        .agent-info h3 { font-size: 1rem; }
+        .agent-info .status-text { color: var(--success); font-size: 0.85rem; }
+        
+        .activity-list { list-style: none; }
+        .activity-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .activity-list li:last-child { border-bottom: none; }
+        .activity-list li i { color: var(--accent-jean); width: 20px; }
+        .activity-list li .time {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            margin-left: auto;
+        }
+        
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+        }
+        .btn:hover {
+            border-color: var(--accent-jean);
+            background: var(--bg-primary);
+        }
+        .btn.primary {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border: none;
+        }
+        .btn.primary:hover { opacity: 0.9; }
+        
+        .weather-card { text-align: center; }
+        .weather-main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .weather-main i { font-size: 3rem; color: var(--warning); }
+        .weather-main .temp { font-size: 2.5rem; font-weight: 700; }
+        .weather-desc { color: var(--text-secondary); font-size: 0.9rem; }
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .weather-detail { background: var(--bg-tertiary); border-radius: 8px; padding: 10px; }
+        .weather-detail .value { font-weight: 700; color: var(--accent-coke); }
+        .weather-detail .label { font-size: 0.7rem; color: var(--text-secondary); }
+        
+        .notes-area {
+            width: 100%;
+            min-height: 120px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 15px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: vertical;
+        }
+        .notes-area:focus {
+            outline: none;
+            border-color: var(--accent-coke);
+        }
+        .save-indicator {
+            font-size: 0.75rem;
+            color: var(--success);
+            margin-top: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .save-indicator.show { opacity: 1; }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -21,7 +273,6 @@
             </div>
         </div>
     </header>
-
     <div class="container">
         <div class="dashboard">
             <div class="main-column">
@@ -53,11 +304,11 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="card">
                     <div class="card-header">
                         <h2><i class="fas fa-cloud-sun"></i> Weather</h2>
-                        <span style="font-size: 0.8rem; color: var(--text-secondary);">Temecula, CA</span>
+                        <span style="font-size: 0.8rem; color: var(--text-secondary);">Titusville, FL</span>
                     </div>
                     <div class="card-body weather-card">
                         <div class="weather-main">
@@ -81,7 +332,7 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="card">
                     <div class="card-header">
                         <h2><i class="fas fa-link"></i> Quick Links</h2>
@@ -107,7 +358,7 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="card">
                     <div class="card-header">
                         <h2><i class="fas fa-sticky-note"></i> Quick Notes</h2>
@@ -119,7 +370,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <div class="side-column">
                 <div class="card agent-card">
                     <div class="card-header">
@@ -131,7 +382,7 @@
                             <div class="agent-avatar">🦀</div>
                             <div class="agent-info">
                                 <h3>Jean-Clawed</h3>
-                                <div class="status-text">● Active & Ready</div>
+                                <div class="status-text">● Active</div>
                             </div>
                         </div>
                         
@@ -143,5 +394,122 @@
                         </ul>
                         
                         <div class="quick-actions">
-                            <button class="btn primary" onclick="showToast('Spawn session coming soon')">
+                            <button class="btn primary" onclick="spawnSession()">
                                 <span><i class="fas fa-terminal"></i> Spawn Session</span>
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            <button class="btn" onclick="checkCron()">
+                                <span><i class="fas fa-clock"></i> Check Cron Jobs</span>
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            <button class="btn" onclick="viewMemory()">
+                                <span><i class="fas fa-brain"></i> View Memory</span>
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+            document.getElementById('date').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+        
+        // Crypto prices
+        async function fetchCrypto() {
+            try {
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,ripple&vs_currencies=usd&include_24hr_change=true');
+                const data = await res.json();
+                
+                const cryptos = [
+                    { id: 'bitcoin', sym: 'btc' },
+                    { id: 'ethereum', sym: 'eth' },
+                    { id: 'ripple', sym: 'xrp' }
+                ];
+                
+                cryptos.forEach(c => {
+                    const price = data[c.id].usd;
+                    const change = data[c.id].usd_24h_change;
+                    document.getElementById(`${c.sym}-price`).textContent = '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    const changeEl = document.getElementById(`${c.sym}-change`);
+                    changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+                    changeEl.className = 'crypto-change ' + (change >= 0 ? 'up' : 'down');
+                });
+            } catch (e) {
+                console.error('Crypto fetch failed:', e);
+            }
+        }
+        fetchCrypto();
+        setInterval(fetchCrypto, 60000);
+        
+        // Weather (using wttr.in for free weather API)
+        async function fetchWeather() {
+            try {
+                const res = await fetch('https://wttr.in/Titusville,FL?format=j1');
+                const data = await res.json();
+                const current = data.current_condition[0];
+                
+                document.getElementById('weather-temp').textContent = current.temp_F + '°';
+                document.getElementById('weather-desc').textContent = current.weatherDesc[0].value;
+                document.getElementById('weather-humidity').textContent = current.humidity + '%';
+                document.getElementById('weather-wind').textContent = current.windspeedMiles + ' mph';
+                document.getElementById('weather-feels').textContent = current.FeelsLikeF + '°';
+                
+                // Update icon based on condition
+                const desc = current.weatherDesc[0].value.toLowerCase();
+                const icon = document.getElementById('weather-icon');
+                if (desc.includes('sun') || desc.includes('clear')) {
+                    icon.className = 'fas fa-sun';
+                    icon.style.color = 'var(--warning)';
+                } else if (desc.includes('rain')) {
+                    icon.className = 'fas fa-cloud-rain';
+                    icon.style.color = '#60a5fa';
+                } else if (desc.includes('cloud')) {
+                    icon.className = 'fas fa-cloud';
+                    icon.style.color = 'var(--text-secondary)';
+                }
+            } catch (e) {
+                console.error('Weather fetch failed:', e);
+            }
+        }
+        fetchWeather();
+        
+        // Notes with localStorage
+        const notesArea = document.getElementById('quick-notes');
+        const saveIndicator = document.getElementById('save-indicator');
+        let saveTimeout;
+        
+        // Load saved notes
+        notesArea.value = localStorage.getItem('mission-control-notes') || '';
+        
+        notesArea.addEventListener('input', () => {
+            saveIndicator.classList.remove('show');
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                localStorage.setItem('mission-control-notes', notesArea.value);
+                saveIndicator.classList.add('show');
+                setTimeout(() => saveIndicator.classList.remove('show'), 2000);
+            }, 500);
+        });
+        
+        // Action buttons (placeholders for now)
+        function spawnSession() {
+            alert('Spawn Session: This would create a new sub-agent session');
+        }
+        function checkCron() {
+            alert('Check Cron: This would show the cron job status');
+        }
+        function viewMemory() {
+            alert('View Memory: This would open the memory viewer');
+        }
+    </script>
+</body>
+</html>
