@@ -3,322 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mission Control | Coke</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
-            color: #c9d1d9;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .header {
-            text-align: center;
-            padding: 40px 20px;
-            border-bottom: 1px solid #30363d;
-            margin-bottom: 30px;
-        }
-        .header h1 {
-            font-size: 3rem;
-            background: linear-gradient(90deg, #58a6ff, #a371f7, #f778ba);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-            letter-spacing: -1px;
-        }
-        .header .subtitle {
-            color: #8b949e;
-            font-size: 1.1rem;
-        }
-        .header .time {
-            font-size: 1.3rem;
-            color: #58a6ff;
-            margin-top: 15px;
-            font-family: 'SF Mono', monospace;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .card {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            padding: 24px;
-            transition: border-color 0.2s, transform 0.2s;
-        }
-        .card:hover {
-            border-color: #58a6ff;
-            transform: translateY(-2px);
-        }
-        .card h2 {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #58a6ff;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .card h2::before {
-            content: "▸";
-            color: #a371f7;
-        }
-        .status-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #21262d;
-        }
-        .status-item:last-child {
-            border-bottom: none;
-        }
-        .status-label {
-            color: #8b949e;
-            font-size: 0.95rem;
-        }
-        .status-value {
-            color: #3fb950;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-        .status-value.warning {
-            color: #d29922;
-        }
-        .crypto-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-top: 8px;
-        }
-        .crypto-item {
-            text-align: center;
-            padding: 16px 8px;
-            background: #0d1117;
-            border-radius: 8px;
-            border: 1px solid #21262d;
-        }
-        .crypto-symbol {
-            font-size: 0.75rem;
-            color: #8b949e;
-            margin-bottom: 6px;
-            font-weight: 600;
-        }
-        .crypto-price {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #58a6ff;
-        }
-        .briefing-list {
-            list-style: none;
-        }
-        .briefing-list li {
-            padding: 12px 0;
-            border-bottom: 1px solid #21262d;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .briefing-list li:last-child {
-            border-bottom: none;
-        }
-        .briefing-time {
-            background: #238636;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            min-width: 55px;
-            text-align: center;
-        }
-        .briefing-name {
-            flex: 1;
-            font-size: 0.95rem;
-        }
-        .briefing-status {
-            font-size: 1rem;
-        }
-        .links-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 8px;
-        }
-        .links-grid a {
-            background: #0d1117;
-            color: #58a6ff;
-            text-decoration: none;
-            padding: 12px 16px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            border: 1px solid #30363d;
-            transition: all 0.2s;
-            text-align: center;
-        }
-        .links-grid a:hover {
-            background: #21262d;
-            border-color: #58a6ff;
-        }
-        .quote-box {
-            background: #0d1117;
-            border-left: 3px solid #a371f7;
-            padding: 16px;
-            border-radius: 0 8px 8px 0;
-            margin-top: 8px;
-        }
-        .quote-box p {
-            color: #8b949e;
-            font-style: italic;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        .footer {
-            text-align: center;
-            padding: 40px 20px;
-            color: #484f58;
-            font-size: 0.85rem;
-        }
-        .footer span {
-            color: #a371f7;
-        }
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            .crypto-grid {
-                grid-template-columns: 1fr;
-            }
-            .links-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <title>Mission Control | Coke & Jean-Clawed</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="header">
-        <h1>🚀 Mission Control</h1>
-        <div class="subtitle">Command Center for Coke</div>
-        <div class="time" id="current-time">--:--:--</div>
-    </div>
-
-    <div class="grid">
-        <!-- System Status -->
-        <div class="card">
-            <h2>System Status</h2>
-            <div class="status-item">
-                <span class="status-label">OpenClaw Gateway</span>
-                <span class="status-value">✓ ONLINE</span>
-            </div>
-            <div class="status-item">
-                <span class="status-label">Telegram Channel</span>
-                <span class="status-value">✓ CONNECTED</span>
-            </div>
-            <div class="status-item">
-                <span class="status-label">Daily Drafts Generator</span>
-                <span class="status-value">✓ ACTIVE</span>
-            </div>
-            <div class="status-item">
-                <span class="status-label">Market Briefings</span>
-                <span class="status-value">4 SCHEDULED</span>
-            </div>
-        </div>
-
-        <!-- Crypto Watch -->
-        <div class="card">
-            <h2>Crypto Watch</h2>
-            <div class="crypto-grid">
-                <div class="crypto-item">
-                    <div class="crypto-symbol">BTC</div>
-                    <div class="crypto-price">Loading...</div>
-                </div>
-                <div class="crypto-item">
-                    <div class="crypto-symbol">ETH</div>
-                    <div class="crypto-price">Loading...</div>
-                </div>
-                <div class="crypto-item">
-                    <div class="crypto-symbol">XRP</div>
-                    <div class="crypto-price">Loading...</div>
+    <header class="header">
+        <div class="header-content">
+            <div class="brand">
+                <div class="brand-icon">🥋</div>
+                <div>
+                    <h1>Mission Control</h1>
                 </div>
             </div>
-        </div>
-
-        <!-- Briefing Schedule -->
-        <div class="card">
-            <h2>Daily Briefings</h2>
-            <ul class="briefing-list">
-                <li                <li>
-                    <span class="briefing-time">6:00 AM</span>
-                    <span class="briefing-name">Fresh Tweet Drafts</span>
-                    <span class="briefing-status">⏳</span>
-                </li>
-                <li>
-                    <span class="briefing-time">7:00 AM</span>
-                    <span class="briefing-name">Morning Brief (Weather + Tasks)</span>
-                    <span class="briefing-status">⏳</span>
-                </li>
-                <li>
-                    <span class="briefing-time">7:30 AM</span>
-                    <span class="briefing-name">Market + Crypto Brief</span>
-                    <span class="briefing-status">⏳</span>
-                </li>
-                <li>
-                    <span class="briefing-time">11:45 AM</span>
-                    <span class="briefing-name">Lunchtime Breaking News</span>
-                    <span class="briefing-status">⏳</span>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Quick Links -->
-        <div class="card">
-            <h2>Quick Links</h2>
-            <div class="links-grid">
-                <a href="../drafts/">Drafts</a>
-                <a href="https://x.com" target="_blank">X/Twitter</a>
-                <a href="https://tradingview.com" target="_blank">TradingView</a>
-                <a href="https://coinmarketcap.com" target="_blank">CoinMarketCap</a>
+            <div class="clock-widget">
+                <div class="time" id="clock">--:--</div>
+                <div class="date" id="date">Loading...</div>
             </div>
         </div>
+    </header>
 
-        <!-- Daily Wisdom -->
-        <div class="card">
-            <h2>Trench Wisdom</h2>
-            <div class="quote-box">
-                <p>"Buy the dip they said didn't exist. Hold the bag they said was temporary. We're still here." — Anonymous Degen</p>
+    <div class="container">
+        <div class="dashboard">
+            <div class="main-column">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-line"></i> Crypto Watch</h2>
+                        <span style="font-size: 0.8rem; color: var(--text-secondary);">Live</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="crypto-grid">
+                            <div class="crypto-card">
+                                <div class="crypto-symbol">BTC</div>
+                                <div class="crypto-name">Bitcoin</div>
+                                <div class="crypto-price" id="btc-price">--</div>
+                                <div class="crypto-change" id="btc-change">--</div>
+                            </div>
+                            <div class="crypto-card">
+                                <div class="crypto-symbol">ETH</div>
+                                <div class="crypto-name">Ethereum</div>
+                                <div class="crypto-price" id="eth-price">--</div>
+                                <div class="crypto-change" id="eth-change">--</div>
+                            </div>
+                            <div class="crypto-card">
+                                <div class="crypto-symbol">XRP</div>
+                                <div class="crypto-name">Ripple</div>
+                                <div class="crypto-price" id="xrp-price">--</div>
+                                <div class="crypto-change" id="xrp-change">--</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-cloud-sun"></i> Weather</h2>
+                        <span style="font-size: 0.8rem; color: var(--text-secondary);">Temecula, CA</span>
+                    </div>
+                    <div class="card-body weather-card">
+                        <div class="weather-main">
+                            <i class="fas fa-sun" id="weather-icon"></i>
+                            <div class="temp" id="weather-temp">--°</div>
+                        </div>
+                        <div class="weather-desc" id="weather-desc">Loading...</div>
+                        <div class="weather-details">
+                            <div class="weather-detail">
+                                <div class="value" id="weather-humidity">--%</div>
+                                <div class="label">Humidity</div>
+                            </div>
+                            <div class="weather-detail">
+                                <div class="value" id="weather-wind">--</div>
+                                <div class="label">Wind</div>
+                            </div>
+                            <div class="weather-detail">
+                                <div class="value" id="weather-feels">--°</div>
+                                <div class="label">Feels Like</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-link"></i> Quick Links</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="links-grid">
+                            <a href="https://clawhub.com" class="link-card" target="_blank">
+                                <i class="fas fa-cube"></i>
+                                <span>ClawHub</span>
+                            </a>
+                            <a href="https://github.com" class="link-card" target="_blank">
+                                <i class="fab fa-github"></i>
+                                <span>GitHub</span>
+                            </a>
+                            <a href="https://twitter.com" class="link-card" target="_blank">
+                                <i class="fab fa-x-twitter"></i>
+                                <span>X/Twitter</span>
+                            </a>
+                            <a href="https://coingecko.com" class="link-card" target="_blank">
+                                <i class="fas fa-coins"></i>
+                                <span>CoinGecko</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-sticky-note"></i> Quick Notes</h2>
+                        <span style="font-size: 0.8rem; color: var(--text-secondary);">Auto-saved</span>
+                    </div>
+                    <div class="card-body">
+                        <textarea class="notes-area" id="quick-notes" placeholder="Type notes here..."></textarea>
+                        <div class="save-indicator" id="save-indicator">✓ Saved</div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="footer">
-        <p>Built with <span>🥋🦀</span> by Jean-Clawed</p>
-    </div>
-
-    <script>
-        function updateTime() {
-            const now = new Date();
-            document.getElementById('current-time').textContent = now.toLocaleTimeString('en-US', { 
-                hour: '2-digit', 
-                minute: '2-digit', 
-                second: '2-digit',
-                timeZone: 'America/New_York'
-            }) + ' EST';
-        }
-        updateTime();
-        setInterval(updateTime, 1000);
-    </script>
-</body>
-</html>
+            <div class="side-column">
+                <div class="card agent-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-robot"></i> Jean-Clawed</h2>
+                        <span class="status-badge">Online</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="agent-status">
+                            <div class="agent-avatar">🦀</div>
+                            <div class="agent-info">
+                                <h3>Jean-Clawed</h3>
+                                <div class="status-text">● Active & Ready</div>
+                            </div>
+                        </div>
+                        
+                        <h4 style="font-size: 0.85rem; margin-bottom: 12px; color: var(--text-secondary);">Recent Activity</h4>
+                        <ul class="activity-list" id="activity-list">
+                            <li><i class="fas fa-check"></i> Dashboard updated <span class="time">Just now</span></li>
+                            <li><i class="fas fa-file"></i> Tweet drafts generated <span class="time">1h ago</span></li>
+                            <li><i class="fas fa-sync"></i> Crypto prices refreshed <span class="time">5m ago</span></li>
+                        </ul>
+                        
+                        <div class="quick-actions">
+                            <button class="btn primary" onclick="showToast('Spawn session coming soon')">
+                                <span><i class="fas fa-terminal"></i> Spawn Session</span>
