@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mission Control v2 | Coke & Jean-Clawed</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg-primary: #0d0d12;
+  --bg-secondary: #15151c;
+  --bg-tertiary: #1e1e28;
+  --border: rgba(255,255,255,0.08);
+  --text-primary: #f0f0f5;
+  --text-secondary: #9ca3af;
+  --accent-coke: #3b82f6;
+  --accent-jean: #8b5cf6;
+  --success: #22c55e;
+}
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; }
+.header { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 20px 30px; position: sticky; top: 0; z-index: 100; }
+.header-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-icon { width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+.container { max-width: 1400px; margin: 0 auto; padding: 30px; }
+.dashboard { display: grid; grid-template-columns: 1fr 360px; gap: 25px; }
+@media (max-width: 1100px) { .dashboard { grid-template-columns: 1fr; } }
+.card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 25px; }
+.card-header { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.card-header h2 { font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+.card-body { padding: 22px; }
+.pipeline-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+@media (max-width: 1100px) { .pipeline-board { grid-template-columns: repeat(2, 1fr); } }
+.pipeline-column { background: var(--bg-tertiary); border-radius: 12px; padding: 15px; min-height: 200px; }
+.pipeline-column-header { font-size: 0.85rem; font-weight: 600; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.pipeline-count { background: var(--bg-primary); color: var(--text-secondary); font-size: 0.75rem; padding: 3px 8px; border-radius: 12px; }
+.agent-avatar { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #ec4899); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-content">
+    <div class="brand">
+      <div class="brand-icon">🥋</div>
+      <div><h1>Mission Control v2</h1></div>
+    </div>
+    <div style="text-align: right;">
+      <div style="font-size: 1.8rem; font-family: monospace; font-weight: 700;" id="clock">--:--</div>
+      <div style="color: var(--text-secondary); font-size: 0.9rem;" id="date">Loading...</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="dashboard">
+    <div class="main-column">
+      <div class="card">
+        <div class="card-header">
+          <h2><i class="fas fa-stream"></i> Content Pipeline</h2>
+        </div>
+        <div class="card-body">
+          <div class="pipeline-board">
+            <div class="pipeline-column">
+              <div class="pipeline-column-header"><span>💡 Idea</span><span class="pipeline-count" id="count-idea">0</span></div>
+              <div id="pipeline-idea"></div>
+            </div>
+            <div class="pipeline-column">
+              <div class="pipeline-column-header"><span>✍️ Written</span><span class="pipeline-count" id="count-written">0</span></div>
+              <div id="pipeline-written"></div>
+            </div>
+            <div class="pipeline-column">
+              <div class="pipeline-column-header"><span>📤 Ready</span><span class="pipeline-count" id="count-ready">0</span></div>
+              <div id="pipeline-ready"></div>
+            </div>
+            <div class="pipeline-column">
+              <div class="pipeline-column-header"><span>✅ Posted</span><span class="pipeline-count" id="count-posted">0</span></div>
+              <div id="pipeline-posted"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="side-column">
+      <div class="card">
+        <div class="card-header"><h2><i class="fas fa-robot"></i> Jean-Clawed</h2></div>
+        <div class="card-body">
+          <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+            <div class="agent-avatar">🦀</div>
+            <div><h3 style="font-size: 1rem;">Jean-Clawed</h3><div style="color: var(--success); font-size: 0.85rem;">● CFO Active</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="pipeline.js"></script>
+<script>
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+  document.getElementById('date').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+}
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+</body>
+</html>
